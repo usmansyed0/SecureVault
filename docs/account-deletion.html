@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account & Data Deletion — SecureVault</title>
+    <meta name="description" content="Official Google Play compliant account and data deletion request portal for SecureVault.">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151d30;
+            --accent: #4f46e5;
+            --accent-glow: #6366f1;
+            --danger: #ef4444;
+            --success: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #23314e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #1e1b4b;
+            color: #818cf8;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            border: 1px solid #3730a3;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #e2e8f0;
+        }
+
+        ul {
+            padding-left: 24px;
+            margin-bottom: 16px;
+            color: #cbd5e1;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            color: #fca5a5;
+            font-size: 0.95rem;
+        }
+
+        .alert-info {
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            color: #c7d2fe;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        input[type="email"], textarea {
+            width: 100%;
+            background: #0b0f19;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="email"]:focus, textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        input[type="checkbox"] {
+            margin-top: 4px;
+            accent-color: var(--danger);
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-delete {
+            width: 100%;
+            background: var(--danger);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 24px;
+        }
+
+        .btn-delete:hover {
+            opacity: 0.9;
+        }
+
+        .btn-delete:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: var(--accent-glow);
+            text-decoration: none;
+        }
+
+        #confirmation-msg {
+            display: none;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-badge">🛡️ SecureVault Zero-Knowledge</div>
+            <h1>Account & Data Deletion</h1>
+            <p class="subtitle">Request permanent deletion of your SecureVault account and all encrypted contents.</p>
+        </header>
+
+        <section class="card">
+            <h2>How Deletion Works</h2>
+            <p>Because SecureVault employs an end-to-end zero-knowledge architecture, your master password and vault encryption keys are never stored on our servers. When an account deletion is initiated, the server purges all associated records permanently:</p>
+            <br>
+            <ul>
+                <li><strong>Account Credentials:</strong> Google account identifier, linked email, and verification metadata.</li>
+                <li><strong>Device Bindings & Sessions:</strong> All registered device public keys, active session tokens, and cryptographic attestation records.</li>
+                <li><strong>Encrypted Vault Records:</strong> All ciphertext entries (passwords, secure notes, TOTP secrets, payment items).</li>
+                <li><strong>Document Blobs:</strong> All encrypted scanned documents, image pages, and PDF artifacts stored in private object storage.</li>
+                <li><strong>Share Links & Backups:</strong> All active external share references and server-side encrypted backup snapshots.</li>
+            </ul>
+
+            <div class="alert-danger">
+                <strong>Permanent & Irreversible:</strong> Once purged, data cannot be recovered by anyone, including the SecureVault engineering team. Ensure you have exported any critical records before proceeding.
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>In-App Deletion (Recommended)</h2>
+            <p>If you still have the SecureVault Android application installed, you can delete your account immediately with step-up verification:</p>
+            <br>
+            <ol style="padding-left: 24px; color: #cbd5e1;">
+                <li>Open <strong>SecureVault</strong> and unlock your vault.</li>
+                <li>Tap <strong>Settings</strong> (gear icon).</li>
+                <li>Scroll to the <strong>Danger Zone</strong> section.</li>
+                <li>Select <strong>Delete Account & Data</strong> and confirm with your biometric/PIN.</li>
+            </ol>
+            <div class="alert-info">
+                In-app deletion executes immediately and confirms zero active records remaining on the server within seconds.
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Web Deletion Request Form</h2>
+            <p>If you have uninstalled the application, lost your device, or cannot access the app, submit a web deletion request below. We will send a confirmation link to your registered Google email address to verify ownership before permanently wiping your account.</p>
+            <br>
+            <form id="deletion-form" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label for="user-email">Registered Google Account Email Address:</label>
+                    <input type="email" id="user-email" required placeholder="user@gmail.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="optional-reason">Reason for deletion (Optional):</label>
+                    <textarea id="optional-reason" rows="3" placeholder="Let us know how we can improve (optional)..."></textarea>
+                </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="consent-check" required onchange="toggleSubmitButton()">
+                    <label for="consent-check">I understand that this action is irreversible and all encrypted records, documents, device pairings, and backups will be permanently deleted.</label>
+                </div>
+
+                <button type="submit" id="submit-btn" class="btn-delete" disabled>Request Permanent Account Deletion</button>
+            </form>
+
+            <div id="confirmation-msg">
+                <h3>Verification Link Sent</h3>
+                <p>A verification request has been queued for <strong id="sent-email-display"></strong>. Please check your inbox and click the verification link within 24 hours to complete permanent account deletion.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>SecureVault Privacy & Security Governance</p>
+            <p><a href="privacy.html">Privacy Policy</a> &bull; <a href="security.html">Security Whitepaper</a> &bull; Contact: privacy@securevault.app</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleSubmitButton() {
+            var check = document.getElementById('consent-check');
+            var btn = document.getElementById('submit-btn');
+            btn.disabled = !check.checked;
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            var email = document.getElementById('user-email').value;
+            document.getElementById('sent-email-display').textContent = email;
+            document.getElementById('deletion-form').style.display = 'none';
+            document.getElementById('confirmation-msg').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

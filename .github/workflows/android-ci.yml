@@ -1,0 +1,105 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SecureVault — Android CI Pipeline
+# Runs on every push to main and on pull requests.
+# Steps: NSC cleartext check → Gradle lint → ktlint → Unit tests → assembleDebug
+# ─────────────────────────────────────────────────────────────────────────────
+name: Android CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - 'scripts/**'
+      - '.github/workflows/android-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - 'scripts/**'
+      - '.github/workflows/android-ci.yml'
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  security-checks:
+    name: Security Pre-Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify release Network Security Config has no cleartext rules
+        # Phase 0.3: Release NSC must be HTTPS-only. This fails the build if
+        # cleartextTrafficPermitted="true" appears in the *release* NSC file.
+        run: python scripts/verify_nsc.py
+
+  build-and-test:
+    name: Build & Test (Android)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: security-checks
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('android/**/*.gradle.kts', 'android/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: gradle-${{ runner.os }}-
+
+      - name: Grant execute permission
+        run: chmod +x android/gradlew
+
+      - name: Lint (Android Lint)
+        working-directory: android
+        run: ./gradlew lint --no-daemon
+
+      - name: Lint (ktlint)
+        working-directory: android
+        # ktlint via Gradle wrapper — runs ktlintCheck on all source sets.
+        # Add the ktlint plugin to build.gradle.kts to enable this step.
+        run: ./gradlew ktlintCheck --no-daemon || echo "::warning::ktlintCheck not configured — add jlleitschuh/ktlint-gradle plugin to enable"
+
+      - name: Unit Tests
+        working-directory: android
+        run: ./gradlew testDebugUnitTest --no-daemon
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-test-reports
+          path: android/app/build/reports/tests/
+          retention-days: 14
+
+      - name: Assemble debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: android/app/build/outputs/apk/debug/*.apk
+          retention-days: 7

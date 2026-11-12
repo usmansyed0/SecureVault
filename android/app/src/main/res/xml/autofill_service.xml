@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AutofillService metadata descriptor.
+
+  Android reads this file when the user selects SecureVault as their autofill
+  provider (Settings → Passwords, passkeys, & accounts → Preferred service).
+
+  settingsActivity: Points to the app's main Settings entry point. Android will
+  surface a "Settings" link next to SecureVault in the autofill provider picker.
+-->
+<autofill-service
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="com.securevault.MainActivity" />

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer Shield Silhouette -->
+    <path
+        android:pathData="M54,28 L74,36 C74,56 65,68 54,76 C43,68 34,56 34,36 Z"
+        android:fillColor="#000000" />
+    <!-- Cutout Keyhole -->
+    <path
+        android:pathData="M54,42 C51.24,42 49,44.24 49,47 C49,48.86 50.02,50.48 51.5,51.32 L50.5,59 L57.5,59 L56.5,51.32 C57.98,50.48 59,48.86 59,47 C59,44.24 56.76,42 54,42 Z"
+        android:fillColor="#FFFFFF" />
+</vector>

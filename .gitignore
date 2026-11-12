@@ -1,0 +1,34 @@
+# Gradle / Android build
+android/.gradle/
+android/.gradle
+android/.idea/
+android/local.properties
+android/app/build/
+android/build_errors.txt
+
+# Android signing secrets — NEVER commit these
+*.jks
+*.keystore
+android/keystore.properties
+
+# Virtual environments and secrets
+backend/.venv/
+desktop/.venv/
+.venv/
+backend/.env
+desktop/.env
+
+# Python artifacts
+**/__pycache__/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+backend/.pytest_cache/
+desktop/.pytest_cache/
+backend/*.db
+backend/*.egg-info/
+
+# Security scan reports
+.gitleaks-report.json
+gitleaks-report.json

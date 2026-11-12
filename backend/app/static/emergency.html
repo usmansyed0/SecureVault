@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecureVault — Emergency Device Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0B0F19;
+      --card-bg: #131B2E;
+      --card-border: #1E293B;
+      --primary: #4E80EE;
+      --primary-hover: #3B6CD8;
+      --danger: #EF4444;
+      --danger-hover: #DC2626;
+      --warning: #F59E0B;
+      --success: #10B981;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+    .container {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .header {
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .header p {
+      color: var(--text-muted);
+      font-size: 0.925rem;
+      margin-top: 0.5rem;
+    }
+    .banner {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: #FECACA;
+    }
+    .banner-title {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #F87171;
+    }
+    .find-hub-link {
+      display: inline-block;
+      margin-top: 0.25rem;
+      color: #60A5FA;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.625rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      gap: 0.5rem;
+    }
+    .btn-primary { background: var(--primary); color: #FFF; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-danger { background: var(--danger); color: #FFF; }
+    .btn-danger:hover { background: var(--danger-hover); }
+    .btn-warning { background: var(--warning); color: #000; }
+    .btn-outline { background: transparent; border: 1px solid var(--card-border); color: var(--text); }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.05); }
+    .device-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .device-item:last-child { border-bottom: none; }
+    .device-info h4 { font-size: 1rem; font-weight: 600; }
+    .device-info span { font-size: 0.8rem; color: var(--text-muted); }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-left: 0.5rem;
+    }
+    .badge-trusted { background: rgba(16, 185, 129, 0.2); color: #34D399; }
+    .badge-stolen { background: rgba(239, 68, 68, 0.2); color: #F87171; }
+    .badge-revoked { background: rgba(245, 158, 11, 0.2); color: #FBBF24; }
+    .device-actions { display: flex; gap: 0.5rem; }
+    .hidden { display: none !important; }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: #FFF;
+      font-family: inherit;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🛡️ SecureVault Emergency Access</h1>
+      <p>Remote device management & anti-theft lockdown portal</p>
+    </div>
+
+    <div class="banner">
+      <div class="banner-title">⚠️ Phone lost or stolen?</div>
+      <div>Marking a device stolen immediately revokes all authentication tokens and commands the device to perform a complete cryptographic wipe on its next network check.</div>
+      <a class="find-hub-link" href="https://www.google.com/android/find" target="_blank" rel="noopener noreferrer">
+        Open Google Find Hub to lock or track your phone &rarr;
+      </a>
+    </div>
+
+    <!-- Auth Section -->
+    <div id="authSection" class="card">
+      <h3 style="margin-bottom: 0.5rem;">Authenticate with Google</h3>
+      <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
+        Sign in to verify your account identity and manage enrolled devices.
+      </p>
+      <div id="tokenEntry">
+        <label style="font-size: 0.8rem; color: var(--text-muted);">Paste Google ID Token or Access Token:</label>
+        <input type="password" id="authTokenInput" placeholder="eyJhbGciOiJSUzI1Ni..." />
+        <button class="btn btn-primary" style="width: 100%;" onclick="loadDevices()">Authenticate & Load Devices</button>
+      </div>
+    </div>
+
+    <!-- Devices Section -->
+    <div id="devicesSection" class="card hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3>Enrolled Devices</h3>
+        <button class="btn btn-warning" onclick="signOutAllOthers()">Sign Out All Other Devices</button>
+      </div>
+      <div id="devicesList">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+
+    <!-- Status Message -->
+    <div id="statusMsg" style="font-size: 0.875rem; text-align: center; color: var(--text-muted);"></div>
+  </div>
+
+  <script>
+    let currentToken = "";
+
+    async function loadDevices() {
+      const input = document.getElementById("authTokenInput").value.trim();
+      if (!input) {
+        showStatus("Please enter an authentication token", true);
+        return;
+      }
+      currentToken = input;
+      showStatus("Loading devices...");
+      try {
+        const res = await fetch("/v1/devices", {
+          headers: { "Authorization": `Bearer ${currentToken}` }
+        });
+        if (!res.ok) throw new Error("Authentication failed (" + res.status + ")");
+        const devices = await res.json();
+        renderDevices(devices);
+        document.getElementById("authSection").classList.add("hidden");
+        document.getElementById("devicesSection").classList.remove("hidden");
+        showStatus("");
+      } catch (e) {
+        showStatus("Error: " + e.message, true);
+      }
+    }
+
+    function renderDevices(devices) {
+      const list = document.getElementById("devicesList");
+      if (!devices || devices.length === 0) {
+        list.innerHTML = "<p style='color: var(--text-muted); padding: 1rem 0;'>No enrolled devices found.</p>";
+        return;
+      }
+      list.innerHTML = devices.map(d => `
+        <div class="device-item">
+          <div class="device-info">
+            <h4>${escapeHtml(d.name)} <span class="badge badge-${escapeHtml(d.status)}">${escapeHtml(d.status)}</span></h4>
+            <span>Platform: ${escapeHtml(d.platform)} | Last seen: ${d.last_seen_at ? escapeHtml(d.last_seen_at) : "Never"}</span>
+          </div>
+          <div class="device-actions">
+            ${d.status !== 'stolen' ? `
+              <button class="btn btn-danger" onclick="markStolen('${escapeHtml(d.id)}')">Report Stolen</button>
+              <button class="btn btn-outline" onclick="revokeDevice('${escapeHtml(d.id)}')">Revoke</button>
+            ` : `<span style="color: var(--danger); font-size: 0.8rem; font-weight: 600;">WIPED / STOLEN</span>`}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    async function markStolen(deviceId) {
+      if (!confirm("Are you sure you want to report this device STOLEN?\n\nThis will invalidate all sessions and instruct the phone to wipe all local cryptographic material immediately.")) return;
+      showStatus("Reporting device stolen...");
+      try {
+        const res = await fetch(`/v1/devices/${deviceId}/mark-stolen`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${currentToken}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ step_up_grant: "emergency_web_grant" })
+        });
+        if (!res.ok) throw new Error("Failed to report stolen: " + res.status);
+        showStatus("Device reported stolen successfully. Wiping signal dispatched.");
+        loadDevices();
+      } catch (e) {
+        showStatus("Error: " + e.message, true);
+      }
+    }
+
+    async function revokeDevice(deviceId) {
+      if (!confirm("Revoke this device?")) return;
+      showStatus("Revoking device...");
+      try {
+        const res = await fetch(`/v1/devices/${deviceId}/revoke`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${currentToken}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ step_up_grant: "emergency_web_grant" })
+        });
+        if (!res.ok) throw new Error("Failed to revoke: " + res.status);
+        showStatus("Device revoked.");
+        loadDevices();
+      } catch (e) {
+        showStatus("Error: " + e.message, true);
+      }
+    }
+
+    async function signOutAllOthers() {
+      if (!confirm("Sign out all other devices?")) return;
+      showStatus("Signing out all other devices...");
+      try {
+        const res = await fetch("/v1/devices/sign-out-others", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${currentToken}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ step_up_grant: "emergency_web_grant" })
+        });
+        if (!res.ok) throw new Error("Failed to sign out other devices: " + res.status);
+        showStatus("All other devices signed out.");
+        loadDevices();
+      } catch (e) {
+        showStatus("Error: " + e.message, true);
+      }
+    }
+
+    function showStatus(msg, isError = false) {
+      const el = document.getElementById("statusMsg");
+      el.textContent = msg;
+      el.style.color = isError ? "var(--danger)" : "var(--text-muted)";
+    }
+
+    function escapeHtml(str) {
+      return (str || "").replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[tag] || tag));
+    }
+  </script>
+</body>
+</html>

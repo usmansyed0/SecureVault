@@ -1,0 +1,106 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SecureVault — Backend CI Pipeline
+# Runs on every push to main and on pull requests.
+# Steps: pip install → pytest → Docker build (smoke test)
+# ─────────────────────────────────────────────────────────────────────────────
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (Backend)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ hashFiles('backend/pyproject.toml') }}
+          restore-keys: pip-${{ runner.os }}-
+
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -e '.[test]' ruff bandit
+
+      - name: Lint (ruff)
+        working-directory: backend
+        run: ruff check app tests
+
+      - name: Format check (ruff)
+        working-directory: backend
+        run: ruff format --check app tests
+
+      - name: Security lint (bandit)
+        working-directory: backend
+        run: bandit -r app -ll -x app/static
+
+      - name: Run tests
+        working-directory: backend
+        env:
+          SECUREVAULT_DATABASE_URL: "sqlite+aiosqlite:///./test.db"
+          SECUREVAULT_JWT_SECRET: "ci-test-secret-that-is-definitely-longer-than-32-bytes-for-validation"
+          SECUREVAULT_REFRESH_TOKEN_HASH_SECRET: "ci-test-refresh-secret-also-longer-than-32-bytes-for-validation"
+          SECUREVAULT_STEP_UP_HASH_SECRET: "ci-test-stepup-secret-also-longer-than-32-bytes-for-validation"
+          SECUREVAULT_ENVIRONMENT: "development"
+        run: pytest -v --tb=short
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-results
+          path: backend/.pytest_cache/
+          retention-days: 7
+
+  docker:
+    name: Docker Build (Smoke)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        working-directory: backend
+        run: docker build -t securevault-api:ci --target production .
+
+      - name: Verify image runs
+        run: |
+          docker run --rm -d --name sv-smoke \
+            -e SECUREVAULT_DATABASE_URL="sqlite+aiosqlite:///./test.db" \
+            -e SECUREVAULT_JWT_SECRET="ci-test-secret-that-is-definitely-longer-than-32-bytes-for-validation" \
+            -e SECUREVAULT_REFRESH_TOKEN_HASH_SECRET="ci-test-refresh-secret-also-longer-than-32-bytes-for-validation" \
+            -e SECUREVAULT_STEP_UP_HASH_SECRET="ci-test-stepup-secret-also-longer-than-32-bytes-for-validation" \
+            -e SECUREVAULT_ENVIRONMENT="development" \
+            -p 8080:8080 \
+            securevault-api:ci
+          sleep 5
+          curl -f http://localhost:8080/healthz || (docker logs sv-smoke && exit 1)
+          docker stop sv-smoke

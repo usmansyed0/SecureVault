@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android 12+ (API 31+) Data Extraction Rules.
+  SecureVault is a zero-knowledge security application.
+  All cloud backups and device-to-device transfers are strictly excluded
+  to ensure keys, tokens, and encrypted vault stores never leave this hardware boundary.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" path="." />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" path="." />
+    </device-transfer>
+</data-extraction-rules>

@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">SecureVault</string>
+    <!-- Google Cloud Console OAuth 2.0 Web Client ID is injected via Gradle resValue (googleWebClientId) -->
+
+    <!-- Navigation & Titles -->
+    <string name="nav_home">Home</string>
+    <string name="nav_passwords">Passwords</string>
+    <string name="nav_documents">Documents</string>
+    <string name="nav_notes">Secure Notes</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_devices">Devices</string>
+
+    <!-- Auth & Lock -->
+    <string name="lock_title">Vault Locked</string>
+    <string name="unlock_pin">Enter 6-digit PIN</string>
+    <string name="unlock_biometric">Unlock with Biometrics</string>
+    <string name="auth_sign_in_google">Sign in with Google</string>
+    <string name="auth_sign_out">Sign Out</string>
+
+    <!-- Actions -->
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_copy">Copy</string>
+    <string name="action_export">Export Vault</string>
+    <string name="action_import">Import Passwords</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back">Navigate back</string>
+    <string name="cd_copy_password">Copy password to clipboard</string>
+    <string name="cd_view_password">Toggle password visibility</string>
+    <string name="cd_totp_timer">Time remaining for verification code</string>
+    <string name="cd_share_item">Share item securely</string>
+    <string name="cd_share_os">Share via Android apps</string>
+    <string name="cd_revoke_share">Revoke shared link immediately</string>
+    <string name="cd_recovery_wizard">Device loss vault recovery wizard</string>
+    <string name="cd_device_pin_setup">Set new device PIN</string>
+    <string name="share_warning_title">Share Security Warning</string>
+    <string name="share_zero_knowledge">Zero-Knowledge Sharing</string>
+    <string name="recovery_title">Device Loss Recovery</string>
+    <!-- Widget Strings -->
+    <string name="widget_description">Quickly lock your vault, add entries, or scan documents without exposing secrets.</string>
+    <string name="widget_title">SecureVault</string>
+    <string name="widget_status_protected">Vault Protected</string>
+    <string name="widget_action_lock">Lock</string>
+    <string name="widget_action_add">Add</string>
+    <string name="widget_action_scan">Scan</string>
+</resources>

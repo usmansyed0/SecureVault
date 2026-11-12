@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SecureVault</string>
+
+    <!-- Navigation & Titles -->
+    <string name="nav_home">होम</string>
+    <string name="nav_passwords">पासवर्ड्स</string>
+    <string name="nav_documents">दस्तावेज़</string>
+    <string name="nav_notes">सुरक्षित नोट्स</string>
+    <string name="nav_settings">सेटिंग्स</string>
+    <string name="nav_devices">उपकरण (डिवाइसेस)</string>
+
+    <!-- Auth & Lock -->
+    <string name="lock_title">वॉल्ट लॉक है</string>
+    <string name="unlock_pin">6-अंकों का पिन दर्ज करें</string>
+    <string name="unlock_biometric">बायोमेट्रिक्स से अनलॉक करें</string>
+    <string name="auth_sign_in_google">गूगल से साइन इन करें</string>
+    <string name="auth_sign_out">साइन आउट</string>
+
+    <!-- Actions -->
+    <string name="action_save">सहेजें</string>
+    <string name="action_cancel">रद्द करें</string>
+    <string name="action_delete">हटाएं</string>
+    <string name="action_copy">कॉपी करें</string>
+    <string name="action_export">वॉल्ट निर्यात (एक्सपोर्ट) करें</string>
+    <string name="action_import">पासवर्ड आयात (इंपोर्ट) करें</string>
+
+    <!-- Accessibility -->
+    <string name="cd_back">पीछे जाएं</string>
+    <string name="cd_copy_password">पासवर्ड क्लिपबोर्ड पर कॉपी करें</string>
+    <string name="cd_view_password">पासवर्ड दिखाएं या छुपाएं</string>
+    <string name="cd_totp_timer">सत्यापन कोड के लिए शेष समय</string>
+    <string name="cd_share_item">आइटम को सुरक्षित रूप से साझा करें</string>
+    <string name="cd_share_os">एंड्रॉइड ऐप्स के माध्यम से साझा करें</string>
+    <string name="cd_revoke_share">साझा किए गए लिंक को तुरंत रद्द करें</string>
+    <string name="cd_recovery_wizard">उपकरण खोने पर वॉल्ट पुनर्प्राप्ति विज़ार्ड</string>
+    <string name="cd_device_pin_setup">नया उपकरण पिन सेट करें</string>
+    <string name="share_warning_title">शेयर सुरक्षा चेतावनी</string>
+    <string name="share_zero_knowledge">ज़ीरो-नॉलेज शेयरिंग</string>
+    <string name="recovery_title">उपकरण खोने पर पुनर्प्राप्ति</string>
+    <!-- Widget Strings -->
+    <string name="widget_description">बिना कोई गोपनीय जानकारी दिखाए अपनी वॉल्ट को तुरंत लॉक करें, प्रविष्टियां जोड़ें या दस्तावेज़ स्कैन करें।</string>
+    <string name="widget_title">SecureVault</string>
+    <string name="widget_status_protected">वॉल्ट सुरक्षित है</string>
+    <string name="widget_action_lock">लॉक करें</string>
+    <string name="widget_action_add">जोड़ें</string>
+    <string name="widget_action_scan">स्कैन करें</string>
+</resources>

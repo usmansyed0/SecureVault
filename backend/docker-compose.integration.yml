@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: securevault_test
+      POSTGRES_PASSWORD: securevault_test_only
+      POSTGRES_DB: securevault_test
+    ports:
+      - "54329:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U securevault_test -d securevault_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 20

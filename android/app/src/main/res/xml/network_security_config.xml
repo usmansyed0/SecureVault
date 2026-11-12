@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RELEASE network security config.
+  - Cleartext HTTP is NEVER permitted (usesCleartextTraffic=false also set in manifest).
+  - Trust only system CA anchors (no user-installed CAs in release builds).
+  - Certificate pinning is enabled for the production API host.
+
+  ┌─────────────────────────────────────────────────────────────────────────────┐
+  │  BEFORE RELEASE — MANDATORY STEPS:                                          │
+  │                                                                             │
+  │  1. Generate the real SPKI pins for your production certificate:            │
+  │       openssl s_client -connect api.securevault.app:443 2>/dev/null \       │
+  │         | openssl x509 -pubkey -noout \                                     │
+  │         | openssl pkey -pubin -outform DER \                                │
+  │         | openssl dgst -sha256 -binary | base64                             │
+  │     Run for both the current and the backup (pre-generated) certificate.    │
+  │                                                                             │
+  │  2. Replace the two REPLACE_WITH_* values below with real 44-character      │
+  │     base64 strings (32 bytes = 256-bit SHA-256, base64-encoded to 44 chars).│
+  │                                                                             │
+  │  3. Run scripts/verify_nsc.py to confirm no cleartext exceptions exist.     │
+  │     The assembleRelease Gradle task also runs this check automatically.     │
+  │                                                                             │
+  │  4. Update RELEASE_CHECKLIST.md after rotating pins.                        │
+  └─────────────────────────────────────────────────────────────────────────────┘
+
+  Pinning rotation procedure:
+    1. Generate backup pin for the new certificate before deploying it.
+    2. Ship an app update with BOTH old and new pins (overlap window).
+    3. After majority of users update, rotate the server certificate.
+    4. Remove the old pin in the next release.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!--
+      Production API host pinning.
+      ⚠  PLACEHOLDER PINS — the build will FAIL if these are not replaced before release.
+         Replace with real SHA-256 SPKI hashes before publishing to Play Store.
+         See DEPLOYMENT.md for the exact openssl command.
+    -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="false">api.securevault.app</domain>
+        <!-- pin-set expiration: review and rotate at least 30 days before this date. -->
+        <pin-set expiration="2027-12-31">
+            <!-- Current certificate public key hash (base64-encoded SHA-256 of SubjectPublicKeyInfo DER).
+                 REPLACE this placeholder with the real value before release. -->
+            <pin digest="SHA-256">REPLACE_WITH_REAL_SPKI_PIN_CURRENT=================</pin>
+            <!-- Backup certificate public key hash — MUST differ from current.
+                 REPLACE this placeholder with the real value before release. -->
+            <pin digest="SHA-256">REPLACE_WITH_REAL_SPKI_PIN_BACKUP==================</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>

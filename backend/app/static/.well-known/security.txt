@@ -1,0 +1,7 @@
+# SecureVault Security Disclosure Policy (RFC 9116)
+Contact: mailto:security@securevault.app
+Policy: https://securevault.app/security
+Acknowledgments: https://securevault.app/hall-of-fame
+Preferred-Languages: en, hi
+Canonical: https://api.securevault.app/.well-known/security.txt
+Expires: 2027-12-31T23:59:59.000Z
